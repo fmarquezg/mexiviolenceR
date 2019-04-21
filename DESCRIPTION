@@ -1,9 +1,12 @@
 Package: mexiviolenceR
-Title: What the Package Does (one line, title case)
+Title: Provide Violence Metrics provided by Mexican Government
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Francisco", "Marquez", email = "fmarquezx7@gmail.com", role = c("aut", "cre"))
+Description: https://datos.gob.mx/busca/dataset/victimas-de-incidencia-delictiva-del-fuero-comun.
 Depends: R (>= 3.5.0)
-License: What license is it under?
+Suggests:
+    knitr,
+	BiocStyle
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
