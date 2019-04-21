@@ -9,7 +9,8 @@
 collect_data <-function() {
   
   url<-'http://datosabiertos.segob.gob.mx/DatosAbiertos/SESNSP/IDVFC_NM_'
-  data<-readr::read_csv(url,locale = locale(encoding = "latin1"))
+  data<-readr::read_csv(url,locale = readr::locale(encoding = "latin1"))
+  #data<-readr::read_csv(url)
   df<-data
   
   df%>%dplyr::filter(`Tipo de delito`=='Homicidio', `Subtipo de delito`=='Homicidio doloso') -> hom
@@ -20,7 +21,7 @@ collect_data <-function() {
     dplyr::select(year,Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre)%>%
     dplyr::group_by(year)%>%
     dplyr::summarise_all(funs(sum))%>%
-    dplyr::gather(month_name,hom, Enero:Diciembre)%>%
+    tidyr::gather(month_name,hom, Enero:Diciembre)%>%
     dplyr::mutate(
       month = case_when(
         month_name == 'Enero' ~ '01',
@@ -40,5 +41,6 @@ collect_data <-function() {
     dplyr::select(-month_name)%>%
     dplyr::mutate(date=paste0(year,'-',month,'-01'))%>%
     dplyr::select(-month)%>%
-    dplyr::mutate(date=as.Date(date))
+    dplyr::mutate(date=as.Date(date)) ->deaths
+  return(deaths)
 }
