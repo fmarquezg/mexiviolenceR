@@ -3,11 +3,9 @@
 #' This function allows you pull data once and format it in a user friendly way
 #' 
 #' @examples
-#' collect_data()
+#' homicides_by_state()
 
-
-collect_data <-function() {
-  
+homicides_by_state <- function(){
   url<-'http://datosabiertos.segob.gob.mx/DatosAbiertos/SESNSP/IDVFC_NM_'
   data<-readr::read_csv(url,locale = readr::locale(encoding = "latin1"))
   #data<-readr::read_csv(url)
@@ -18,8 +16,8 @@ collect_data <-function() {
     dplyr::rename(year = "Año")->hom
   
   hom%>%
-    dplyr::select(year,Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre)%>%
-    dplyr::group_by(year)%>%
+    dplyr::select(year,Entidad,Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre)%>%
+    dplyr::group_by(year,Entidad)%>%
     dplyr::summarise_all(funs(sum))%>%
     tidyr::gather(month_name,hom, Enero:Diciembre)%>%
     dplyr::mutate(
@@ -40,8 +38,9 @@ collect_data <-function() {
     )%>%
     dplyr::select(-month_name)%>%
     dplyr::mutate(date=paste0(year,'-',month,'-01'))%>%
-    dplyr::select(-month)%>%
+    dplyr::select(-month,-year)%>%
     dplyr::mutate(date=as.Date(date)) %>%
-   dplyr::select(date,hom)->deaths
+    dplyr::rename(homicides=hom, state = Entidad) %>%
+    dplyr::select(date,state,homicides)->deaths
   return(deaths)
 }
