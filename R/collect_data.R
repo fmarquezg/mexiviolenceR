@@ -1,3 +1,11 @@
+#' Collecting data from web
+#'
+#' This function allows you pull data once and format it in a user friendly way
+#' 
+#' @examples
+#' collect_data()
+
+
 collect_data <-function() {
   
   url<-'http://datosabiertos.segob.gob.mx/DatosAbiertos/SESNSP/IDVFC_NM_'
